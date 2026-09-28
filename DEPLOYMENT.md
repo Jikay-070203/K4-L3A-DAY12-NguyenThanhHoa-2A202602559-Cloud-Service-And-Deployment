@@ -10,7 +10,7 @@
 
 | Mục | Nội dung |
 |-----|----------|
-| Họ và tên | Nguyen Thanh Hoa |
+| Họ và tên | Nguyễn Thanh Hòa |
 | Mã học viên | 2A202602559 |
 | Repo | K4-L3A-DAY12-NguyenThanhHoa-2A202602559-Cloud-Service-And-Deployment |
 
