@@ -18,9 +18,9 @@
 
 | Mục | Nội dung |
 |-----|----------|
-| Public URL | TODO: dán URL Railway sau khi Generate Domain |
+| Public URL | https://agent-production-910f.up.railway.app |
 | Platform | Railway |
-| Ngày deploy | TODO: điền ngày deploy |
+| Ngày deploy | 2026-03-31 |
 
 ## Biến Môi Trường Đã Set Trên Cloud
 
@@ -41,18 +41,18 @@ Thay `<URL>` bằng Public URL ở trên:
 
 ```bash
 # 1. Liveness — mong đợi 200 {"status":"ok"}
-curl -i <URL>/health
+curl -i [https://agent-production-910f.up.railway.app/health](https://agent-production-910f.up.railway.app/health)
 
 # 2. Readiness — mong đợi 200 {"status":"ready"} (đã nối được Redis)
-curl -i <URL>/ready
+curl -i [https://agent-production-910f.up.railway.app/ready](https://agent-production-910f.up.railway.app/ready)
 
 # 3. Không có API key — mong đợi 401
-curl -i -X POST <URL>/ask \
+curl -i -X POST [https://agent-production-910f.up.railway.app/ask](https://agent-production-910f.up.railway.app/ask) \
   -H "Content-Type: application/json" \
   -d '{"question":"Hello"}'
 
 # 4. Có API key — mong đợi 200 kèm câu trả lời
-curl -i -X POST <URL>/ask \
+curl -i -X POST [https://agent-production-910f.up.railway.app/ask](https://agent-production-910f.up.railway.app/ask) \
   -H "Content-Type: application/json" \
   -H "X-API-Key: $AGENT_API_KEY" \
   -H "X-User-Id: sv-test" \
@@ -60,42 +60,9 @@ curl -i -X POST <URL>/ask \
 
 # 5. Rate limit — gọi 15 lần, những lần cuối phải trả 429
 for i in $(seq 1 15); do
-  curl -s -o /dev/null -w "%{http_code} " -X POST <URL>/ask \
+  curl -s -o /dev/null -w "%{http_code} " -X POST [https://agent-production-910f.up.railway.app/ask](https://agent-production-910f.up.railway.app/ask) \
     -H "Content-Type: application/json" \
     -H "X-API-Key: $AGENT_API_KEY" \
     -H "X-User-Id: sv-test" \
     -d '{"question":"test"}'
 done; echo
-```
-
-## Kết Quả Chạy Thật
-
-Dán output của các lệnh trên vào đây:
-
-```
-(sẽ cập nhật sau khi Railway deploy thành công)
-```
-
-## Ảnh Chụp Màn Hình
-
-Đặt ảnh trong thư mục `screenshots/`:
-
-- `screenshots/dashboard.png` — trang quản lý service trên platform
-- `screenshots/health.png` — kết quả gọi `/health` từ trình duyệt hoặc curl
-
----
-
-## Nếu Dùng Phương Án Dự Phòng
-
-Không đăng ký được tài khoản cloud? Vẫn nộp được bài, nhưng CP5 tối đa 60% điểm:
-
-1. Đặt `LOCAL_FALLBACK=true` trong `.env`
-2. Chạy `docker compose up -d` rồi kiểm tra `docker compose ps`
-3. Chụp màn hình vào `screenshots/`
-4. Chạy `pytest tests/test_cp5.py -v` — bộ test sẽ tự chuyển sang kiểm tra
-   `http://localhost:8000`
-5. Ghi rõ lý do không deploy được vào phần dưới đây:
-
-```
-(điền lý do nếu dùng phương án dự phòng, ngược lại xóa mục này)
-```
